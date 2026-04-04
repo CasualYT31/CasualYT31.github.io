@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BKM Battles</title>
+        <link rel=stylesheet type="text/css" href="/styles.css" />
+        <script src="/src/algorithms.js" type="text/javascript" defer></script>
+        <script src="/src/main.js" type="text/javascript" defer></script>
+        <script src="/src/test.js" type="text/javascript" defer></script>
+    </head>
+    <body>
+        <div id="panelSwitcher" class="radioButtons">
+            <button id="generatorButton" onclick="showGeneratorPanel();">Generator</button>
+            <button id="validatorButton" onclick="showValidatorPanel();">Validator</button>
+        </div>
+        <div class="panel">
+            <div id="gameStateForm" class="subPanel">
+                <h2 id="helpTitle" onclick="toggleHelpText();">How to Use ▼</h2>
+                <div id="helpText" style="display: none;">
+                    <h3>Generator Mode</h3>
+                    <ol>
+                        <li>Go through the form and select all of the things you want to start the game with.</li>
+                        <li>As you update the form, you will notice that the password at the bottom of the page will update automatically.</li>
+                        <li>If you are playing on an emulator that lets you edit the game's memory, you can directly insert the copied password into memory instead of typing it out:
+                            <ol style="list-style-type: lower-alpha;">
+                                <li>First, copy the password as hex.</li>
+                                <li>Then, navigate to the Resume Game menu.</li>
+                                <li>You will need to type in any character. The game won't let you immediately submit a password if your cursor is at the first character.</li>
+                                <li>Navigate to <code>0x03002d90</code> in memory (in RALibRetro, this will be <code>0x002d90</code>).</li>
+                                <li>This points to a small byte array the game uses to keep track of the password the user inputs via the in-game keyboard.</li>
+                                <li>Paste the copied password bytes into the aforementioned address.</li>
+                                <li>The password will not show up in the textbox, but you should be able to submit it anyway.</li>
+                            </ol>
+                        </li>
+                        <li>If you run into a bug with this website, please report it <a href="https://github.com/CasualYT31/CasualYT31.github.io/issues" target="_blank">here</a>.</li>
+                    </ol>
+                    <h3>Validator Mode</h3>
+                    <ol>
+                        <li>Type in a password in the textbox at the bottom of the page.</li>
+                        <li>If the password is valid, the read-only form will update with the information encoded within the password, telling you how the game will resume if the password is submitted.</li>
+                        <li>If the password is invalid, the form will disappear until you input a valid password, or switch back to the Generator mode.</li>
+                        <li>This website can also distinguish between a regular password and one of the hard-coded passwords within the ROM. If one is given, the form will be replaced with a brief description of the hard-coded password's effect.</li>
+                        <li>Whitespace will be ignored when typing out a password, but you must remember to use upper case!</li>
+                    </ol>
+                </div>
+                <h3>World</h3>
+                <div id="worldButtons" class="radioButtons">
+                    <button value="1" onclick="selectDesiredWorldAndGeneratePassword(event.target.value);">
+                        <img src="/images/asteroidBase.png" />
+                        Asteroid Base
+                    </button>
+                    <button value="2" onclick="selectDesiredWorldAndGeneratePassword(event.target.value);">
+                        <img src="/images/mechtropolis.png" />
+                        Mechtropolis
+                    </button>
+                    <button value="3" onclick="selectDesiredWorldAndGeneratePassword(event.target.value);">
+                        <img src="/images/aquatica.png" />
+                        Aquatica
+                    </button>
+                    <button value="4" onclick="selectDesiredWorldAndGeneratePassword(event.target.value);">
+                        <img src="/images/arborea.png" />
+                        Arborea
+                    </button>
+                    <button value="5" onclick="selectDesiredWorldAndGeneratePassword(event.target.value);">
+                        <img src="/images/siliconCity.png" />
+                        Silicon City
+                    </button>
+                    <button value="6" onclick="selectDesiredWorldAndGeneratePassword(event.target.value);">
+                        <img src="/images/magma.png" />
+                        Magma
+                    </button>
+                    <button value="7" onclick="selectDesiredWorldAndGeneratePassword(event.target.value);">
+                        <img src="/images/kooFooShip.png" />
+                        Koo Foo Ship
+                    </button>
+                </div>
+                <h3>Level</h3>
+                <div id="levelButtons" class="radioButtons">
+                    <button value="1" onclick="selectDesiredLevelAndGeneratePassword(event.target.value);">
+                        <img id="level1Button" />
+                        1
+                    </button>
+                    <button value="2" onclick="selectDesiredLevelAndGeneratePassword(event.target.value);">
+                        <img id="level2Button" />
+                        2
+                    </button>
+                    <button value="3" onclick="selectDesiredLevelAndGeneratePassword(event.target.value);">
+                        <img id="level3Button" />
+                        3
+                    </button>
+                    <button value="4" onclick="selectDesiredLevelAndGeneratePassword(event.target.value);">
+                        <img id="level4Button" />
+                        4
+                    </button>
+                </div>
+                <div id="characterStatsWrapper">
+                    <div id="characterStats">
+                        <div>
+                            <h3>
+                                Do-Wah
+                                <img src="/images/DoWah.png" />
+                            </h3>
+                            <h4>HP</h4>
+                            <div class="slider">
+                                <div id="doWahHpCount" class="label"></div>
+                                <input id="doWahHpSlider" type="range" min=0 max=30 oninput="setCharacterHpAndGeneratePassword('red', event.target.value);" />
+                            </div>
+                            <h4>Defense Stars</h4>
+                            <div class="slider">
+                                <div id="doWahDefenseStarsCount" class="label"></div>
+                                <input id="doWahDefenseStarsSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('red', 'defenseStars', event.target.value);" />
+                            </div>
+                            <h4>Attack Stars</h4>
+                            <div class="slider">
+                                <div id="doWahAttackStarsCount" class="label"></div>
+                                <input id="doWahAttackStarsSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('red', 'attackStars', event.target.value);" />
+                            </div>
+                            <h4>Defense</h4>
+                            <div class="slider">
+                                <div id="doWahDefenseCount" class="label"></div>
+                                <input id="doWahDefenseSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('red', 'defense', event.target.value);" />
+                            </div>
+                            <h4>Attack</h4>
+                            <div class="slider">
+                                <div id="doWahAttackCount" class="label"></div>
+                                <input id="doWahAttackSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('red', 'attack', event.target.value);" />
+                            </div>
+                            <div class="radioButtons upgradeOffsetButtonContainer">
+                                <button class="upgradeOffsetButton" onclick="offsetCharacterUpgradesAndGeneratePassword('red', -1);">-1</button>
+                                <button class="upgradeOffsetButton" onclick="offsetCharacterUpgradesAndGeneratePassword('red', 1);">+1</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>
+                                2-T
+                                <img src="/images/2T.png" />
+                            </h3>
+                            <h4>HP</h4>
+                            <div class="slider">
+                                <div id="twoTHpCount" class="label"></div>
+                                <input id="twoTHpSlider" type="range" min=0 max=30 oninput="setCharacterHpAndGeneratePassword('blue', event.target.value);" />
+                            </div>
+                            <h4>Defense Stars</h4>
+                            <div class="slider">
+                                <div id="twoTDefenseStarsCount" class="label"></div>
+                                <input id="twoTDefenseStarsSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('blue', 'defenseStars', event.target.value);" />
+                            </div>
+                            <h4>Attack Stars</h4>
+                            <div class="slider">
+                                <div id="twoTAttackStarsCount" class="label"></div>
+                                <input id="twoTAttackStarsSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('blue', 'attackStars', event.target.value);" />
+                            </div>
+                            <h4>Defense</h4>
+                            <div class="slider">
+                                <div id="twoTDefenseCount" class="label"></div>
+                                <input id="twoTDefenseSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('blue', 'defense', event.target.value);" />
+                            </div>
+                            <h4>Attack</h4>
+                            <div class="slider">
+                                <div id="twoTAttackCount" class="label"></div>
+                                <input id="twoTAttackSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('blue', 'attack', event.target.value);" />
+                            </div>
+                            <div class="radioButtons upgradeOffsetButtonContainer">
+                                <button class="upgradeOffsetButton" onclick="offsetCharacterUpgradesAndGeneratePassword('blue', -1);">-1</button>
+                                <button class="upgradeOffsetButton" onclick="offsetCharacterUpgradesAndGeneratePassword('blue', 1);">+1</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>
+                                B.Bop
+                                <img src="/images/BBop.png" />
+                            </h3>
+                            <h4>HP</h4>
+                            <div class="slider">
+                                <div id="bBopHpCount" class="label"></div>
+                                <input id="bBopHpSlider" type="range" min=0 max=30 oninput="setCharacterHpAndGeneratePassword('yellow', event.target.value);" />
+                            </div>
+                            <h4>Defense Stars</h4>
+                            <div class="slider">
+                                <div id="bBopDefenseStarsCount" class="label"></div>
+                                <input id="bBopDefenseStarsSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('yellow', 'defenseStars', event.target.value);" />
+                            </div>
+                            <h4>Attack Stars</h4>
+                            <div class="slider">
+                                <div id="bBopAttackStarsCount" class="label"></div>
+                                <input id="bBopAttackStarsSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('yellow', 'attackStars', event.target.value);" />
+                            </div>
+                            <h4>Defense</h4>
+                            <div class="slider">
+                                <div id="bBopDefenseCount" class="label"></div>
+                                <input id="bBopDefenseSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('yellow', 'defense', event.target.value);" />
+                            </div>
+                            <h4>Attack</h4>
+                            <div class="slider">
+                                <div id="bBopAttackCount" class="label"></div>
+                                <input id="bBopAttackSlider" type="range" min=0 max=6 oninput="setCharacterUpgradeAndGeneratePassword('yellow', 'attack', event.target.value);" />
+                            </div>
+                            <div class="radioButtons upgradeOffsetButtonContainer">
+                                <button class="upgradeOffsetButton" onclick="offsetCharacterUpgradesAndGeneratePassword('yellow', -1);">-1</button>
+                                <button class="upgradeOffsetButton" onclick="offsetCharacterUpgradesAndGeneratePassword('yellow', 1);">+1</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="radioButtons">
+                        <button class="upgradeOffsetAllButton" onclick="setAllCharacterUpgradesAndGeneratePassword(UPGRADE.Zero);">Remove All Upgrades</button>
+                        <button class="upgradeOffsetAllButton" onclick="setAllCharacterUpgradesAndGeneratePassword(UPGRADE.Six);">Apply All Upgrades</button>
+                    </div>
+                </div>
+                <h3>
+                    Repair Kits
+                    <img src="/images/repairKit.png" />
+                </h3>
+                <div class="slider">
+                    <div id="repairKitsCount" class="label"></div>
+                    <input id="repairKitsSlider" type="range" min=0 max=7 oninput="setRepairKitCountAndGeneratePassword(event.target.value);" />
+                </div>
+                <h3>Difficulty</h3>
+                <div id="difficultyButtons" class="radioButtons">
+                    <button value="0" onclick="selectDesiredDifficultyAndGeneratePassword(event.target.value);">Easy</button>
+                    <button value="1" onclick="selectDesiredDifficultyAndGeneratePassword(event.target.value);">Medium</button>
+                    <button value="2" onclick="selectDesiredDifficultyAndGeneratePassword(event.target.value);">Hard</button>
+                </div>
+                <h3>Selected Character</h3>
+                <div id="characterButtons" class="radioButtons">
+                    <button value="0" onclick="selectDesiredCharacterAndGeneratePassword(event.target.value);">
+                        <img src="/images/DoWah.png" />
+                        Do-Wah
+                    </button>
+                    <button value="1" onclick="selectDesiredCharacterAndGeneratePassword(event.target.value);">
+                        <img src="/images/2T.png" />
+                        2-T
+                    </button>
+                    <button value="2" onclick="selectDesiredCharacterAndGeneratePassword(event.target.value);">
+                        <img src="/images/BBop.png" />
+                        B.Bop
+                    </button>
+                </div>
+                <h3>Gems</h3>
+                <div id="gemButtons" class="radioButtons">
+                    <button value="red" onclick="toggleGemAndGeneratePassword(event.target.value);">
+                        <img src="/images/RedGem.png" />
+                    </button>
+                    <button value="cyan" onclick="toggleGemAndGeneratePassword(event.target.value);">
+                        <img src="/images/CyanGem.png" />
+                    </button>
+                    <button value="green" onclick="toggleGemAndGeneratePassword(event.target.value);">
+                        <img src="/images/GreenGem.png" />
+                    </button>
+                    <button value="pink" onclick="toggleGemAndGeneratePassword(event.target.value);">
+                        <img src="/images/PinkGem.png" />
+                    </button>
+                    <button value="orange" onclick="toggleGemAndGeneratePassword(event.target.value);">
+                        <img src="/images/OrangeGem.png" />
+                    </button>
+                </div>
+            </div>
+            <div id="messageBox" class="subPanel" style="display: none;"></div>
+            <div id="generatedPasswordContainer" class="fullWidth">
+                <input id="generatedPassword" oninput="attemptToValidatePassword(event.target.value);" />
+                <div class="radioButtons">
+                    <button onclick="copyPasswordAsText();">Copy as Text</button>
+                    <button onclick="copyPasswordAsHex();">Copy as Hex</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
