@@ -656,7 +656,10 @@ function generateAndDisplayPassword() {
 function attemptToValidatePassword(password) {
     password = password.replaceAll(/\s/g, "");
 
-    if (password in HARD_CODED_PASSWORDS) {
+    if (password.length > 15) {
+        showMessageBox("Passwords must be 15 characters in length!");
+        return;
+    } else if (password in HARD_CODED_PASSWORDS) {
         showMessageBox(`
             <p>This is a <b>hard-coded</b> password that ${HARD_CODED_PASSWORDS[password]}.</p>
         `);
