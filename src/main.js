@@ -323,27 +323,26 @@ let ValidationMode = false;
  * @type {Record<string,string>}
  */
 const HARD_CODED_PASSWORDS = {
-    IWTSOWN2: "spawns the player in Mechtropolis",
-    TMTWN3PD: "spawns the player in Aquatica",
-    IALTSMO4: "spawns the player in Arborea",
-    IOTJOWN5: "spawns the player in Silicon City",
-    FILGSOW6: "spawns the player in Magma",
-    IWTSOWN7: "spawns the player in Koo Foo Ship",
-    "2ELFMPLS":
-        "gives the player two extra repair kits (according to <a href='https://gamefaqs.gamespot.com/gba/578723-butt-ugly-martians-bkm-battles/cheats' target='_blank'>this source</a>, but I couldn't get it to work, not sure what it does)",
-    IAGAW4EL:
-        "gives the player four extra repair kits (according to <a href='https://gamefaqs.gamespot.com/gba/578723-butt-ugly-martians-bkm-battles/cheats' target='_blank'>this source</a>, but I couldn't get it to work, not sure what it does)",
-    GMACOEWU: "gives each character two extra attack upgrades",
-    IAGAW4WU: "gives each character four extra attack upgrades",
-    JT2DU4MP: "gives each character two extra defense upgrades",
-    DUATOU4M: "gives each character four extra defense upgrades",
-    ALWMAA15: "gives each character all attack and defense upgrades, as well as six repair kits",
+    IWTSOWN2: "forces the player to always spawn in Mechtropolis when starting or resuming a game",
+    TMTWN3PD: "forces the player to always spawn in Aquatica when starting or resuming a game",
+    IALTSMO4: "forces the player to always spawn in Arborea when starting or resuming a game",
+    IOTJOWN5: "forces the player to always spawn in Silicon City when starting or resuming a game",
+    FILGSOW6: "forces the player to always spawn in Magma when starting or resuming a game",
+    IWTSOWN7: "forces the player to always spawn in Koo Foo Ship when starting or resuming a game",
+    "2ELFMPLS": "gives the player two extra repair kits when starting a new game",
+    IAGAW4EL: "gives the player four extra repair kits when starting a new game",
+    GMACOEWU: "gives each character two extra attack upgrades when starting or resuming a game",
+    IAGAW4WU: "gives each character four extra attack upgrades when starting or resuming a game",
+    JT2DU4MP: "gives each character two extra defense upgrades when starting or resuming a game",
+    DUATOU4M: "gives each character four extra defense upgrades when starting or resuming a game",
+    ALWMAA15:
+        "gives each character all attack and defense upgrades, as well as six repair kits, when starting or resuming a game",
     KMIORMAO:
-        "gives the player unlimited repair kits (it will look like you've only received five, but that number won't go down if you use one)",
-    LMBOTFLP: "spawns the player in the first level of the world",
-    IIFHABLH: "spawns the player in the second level of the world",
-    WPTBITWN: "spawns the player in the third level of the world",
-    AALAALAL: "spawns the player in the fourth level of the world",
+        "gives the player unlimited repair kits (it will look like you've only got five, but that number won't go down if you use one)",
+    LMBOTFLP: "forces the player to always spawn in the first level of the world when starting or resuming a game",
+    IIFHABLH: "forces the player to always spawn in the second level of the world when starting or resuming a game",
+    WPTBITWN: "forces the player to always spawn in the third level of the world when starting or resuming a game",
+    AALAALAL: "forces the player to always spawn in the fourth level of the world when starting or resuming a game",
 };
 
 /**
